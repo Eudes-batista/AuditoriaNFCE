@@ -11,6 +11,7 @@ import br.com.swconsultoria.certificado.exception.CertificadoException;
 import br.com.swconsultoria.nfe.Nfe;
 import br.com.swconsultoria.nfe.dom.ConfiguracoesNfe;
 import br.com.swconsultoria.nfe.dom.enuns.DocumentoEnum;
+import br.com.swconsultoria.nfe.schema_4.retConsStatServ.TRetConsStatServ;
 import javax.swing.JOptionPane;
 
 public class Principal {
@@ -27,7 +28,10 @@ public class Principal {
         ConfiguracoesNfe config = null;
         try {
             config = ConfiguracaoNFCE.iniciaConfiguracoes();
-            Nfe.statusServico(config, DocumentoEnum.NFCE);
+            TRetConsStatServ statusServico = Nfe.statusServico(config, DocumentoEnum.NFCE);
+            if(statusServico == null){
+                JOptionPane.showMessageDialog(null, "Serviço do Sefaz fora do ar ou está sem Internet.");
+            }
         } catch (CertificadoException ex) {
             JOptionPane.showMessageDialog(null, ex);
         } catch (Exception ex) {
