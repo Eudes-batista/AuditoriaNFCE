@@ -214,8 +214,8 @@ public class ControleNFCE {
         TNFe.InfNFe.Det.Prod prod = new TNFe.InfNFe.Det.Prod();
         prod.setCProd(item.getReferencia());
         String codigoBarra = item.getCodigoBarras();
-        if(codigoBarra != null && !codigoBarra.isEmpty()){
-            codigoBarra =  codigoBarra.startsWith("789") ? codigoBarra : "SEM GTIN";
+        if (codigoBarra != null && !codigoBarra.isEmpty()) {
+            codigoBarra = codigoBarra.startsWith("789") ? codigoBarra : "SEM GTIN";
         }
         prod.setXProd(item.getDescricao().trim());
         prod.setNCM(item.getNcm());
@@ -336,17 +336,9 @@ public class ControleNFCE {
             if (f.getTipoPagamento().equals("DINHEIRO")) {
                 detPag.setTPag("01");
                 detPag.setVPag(df.format(f.getValorPagamentoLiquido()));
-            } else if (f.getDescricaoPagamento().contains("CREDITO")) {
-                detPag.setTPag("03");
-                detPag.setVPag(df.format(f.getValorPagamentoLiquido()));
-                TNFe.InfNFe.Pag.DetPag.Card card = new TNFe.InfNFe.Pag.DetPag.Card();
-                card.setTpIntegra("1");
-                card.setCNPJ("99999999999999");
-                card.setTBand("99");
-                card.setCAut(f.getNsutef());
-                detPag.setCard(card);
-            } else if (f.getDescricaoPagamento().contains("DEBITO")) {
-                detPag.setTPag("04");
+            }
+            if (f.getTipoPagamento().equals("CARTAO")) {
+                detPag.setTPag(f.getDescricaoPagamento().contains("DEBITO") ? "04" : "03");
                 detPag.setVPag(df.format(f.getValorPagamentoLiquido()));
                 TNFe.InfNFe.Pag.DetPag.Card card = new TNFe.InfNFe.Pag.DetPag.Card();
                 card.setTpIntegra("1");
