@@ -1,0 +1,5 @@
+localhost
+sigmasat
+3306
+root
+123456

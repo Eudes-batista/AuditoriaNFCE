@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
@@ -210,7 +211,6 @@ public class ControleNFCE {
     }
 
     private TNFe.InfNFe.Det.Prod preencheProduto(Item item) {
-
         TNFe.InfNFe.Det.Prod prod = new TNFe.InfNFe.Det.Prod();
         prod.setCProd(item.getReferencia());
         String codigoBarra = item.getCodigoBarras();
@@ -225,13 +225,13 @@ public class ControleNFCE {
         }
         prod.setCFOP(item.getCfopSaidaDentroEstado().replace(".", ""));
         prod.setUCom(item.getUnidadeVenda());
-        prod.setQCom(df.format(item.getQuantidade()));
+        prod.setQCom(df.format(item.getQuantidade()).replaceFirst(Pattern.quote("."), ""));
         prod.setVUnCom(df.format(item.getValorUnitario()));
         prod.setVProd(df.format(item.getValorTotalLiquido()));
         prod.setCEAN(codigoBarra);
         prod.setCEANTrib(codigoBarra);
         prod.setUTrib(item.getUnidadeVenda());
-        prod.setQTrib(df.format(item.getQuantidade()));
+        prod.setQTrib(df.format(item.getQuantidade()).replaceFirst(Pattern.quote("."), ""));
         prod.setVUnTrib(String.valueOf(item.getValorTotalLiquido()));
         if (item.getDesconto() != 0) {
             prod.setVDesc(df.format(item.getDesconto()));
@@ -240,7 +240,6 @@ public class ControleNFCE {
             prod.setVOutro(df.format(item.getAcrescimo()));
         }
         prod.setIndTot("1");
-
         return prod;
     }
 
