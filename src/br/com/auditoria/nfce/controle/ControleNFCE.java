@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
@@ -39,7 +38,7 @@ public class ControleNFCE {
 
     private final ConfiguracoesNfe config;
     private final List<Double> valoresIcms = new ArrayList<>();
-    private final DecimalFormat df = new DecimalFormat("###,##0.00");
+    private final DecimalFormat df = new DecimalFormat("#####0.00");
 
     public ControleNFCE(ConfiguracoesNfe config) {
         this.config = config;
@@ -225,13 +224,13 @@ public class ControleNFCE {
         }
         prod.setCFOP(item.getCfopSaidaDentroEstado().replace(".", ""));
         prod.setUCom(item.getUnidadeVenda());
-        prod.setQCom(df.format(item.getQuantidade()).replaceFirst(Pattern.quote("."), ""));
+        prod.setQCom(df.format(item.getQuantidade()));
         prod.setVUnCom(df.format(item.getValorUnitario()));
         prod.setVProd(df.format(item.getValorTotalLiquido()));
         prod.setCEAN(codigoBarra);
         prod.setCEANTrib(codigoBarra);
         prod.setUTrib(item.getUnidadeVenda());
-        prod.setQTrib(df.format(item.getQuantidade()).replaceFirst(Pattern.quote("."), ""));
+        prod.setQTrib(df.format(item.getQuantidade()));
         prod.setVUnTrib(String.valueOf(item.getValorTotalLiquido()));
         if (item.getDesconto() != 0) {
             prod.setVDesc(df.format(item.getDesconto()));
@@ -284,7 +283,7 @@ public class ControleNFCE {
         icms00.setVBC(String.valueOf(item.getValorTotalLiquido()));
         icms00.setPICMS(String.valueOf(item.getIcms()));
         double valorIcms = item.getValorTotalLiquido() * (item.getIcms() / 100);
-        DecimalFormat decimalFormat = new DecimalFormat("###,##0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#####0.00");
         decimalFormat.setRoundingMode(RoundingMode.UP);
         this.valoresIcms.add(valorIcms);
         icms00.setVICMS(decimalFormat.format(valorIcms).replace(",", "."));
